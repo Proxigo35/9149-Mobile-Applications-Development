@@ -1,0 +1,14 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Recipes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card *ngFor="let recipe of recipeInfo">
+    <img src="{{ recipe.image }}">
+    <ion-card-header>
+	  <ion-card-title>{{ recipe.title }}</ion-card-title>
+	</ion-card-header>
+  </ion-card>
+</ion-content>
