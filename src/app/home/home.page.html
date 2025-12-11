@@ -1,12 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title> G00472938 </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-input label="Enter ingredients" placeholder="ingredients" [(ngModel)]="ingredients"></ion-input>
-  <ion-button (click)="openRecipes()">Search</ion-button>
+  <ion-input
+    label="Enter ingredients"
+    placeholder="ingredients"
+    [(ngModel)]="ingredients"
+  ></ion-input>
+  <ion-button (click)="getRecipes()">Search</ion-button>
+  <app-recipes *ngIf="recipes?.length" [recipes]="recipes"></app-recipes>
 </ion-content>
