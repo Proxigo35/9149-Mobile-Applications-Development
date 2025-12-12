@@ -10,6 +10,46 @@
     placeholder="ingredients"
     [(ngModel)]="ingredients"
   ></ion-input>
-  <ion-button (click)="getRecipes()">Search</ion-button>
-  <app-recipes *ngIf="recipes?.length" [recipes]="recipes"></app-recipes>
+  <ion-button (click)="getRecipes()" expand="block">Search</ion-button>
+  <div
+    *ngIf="recipes.length == 0 && !searchInitiated"
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60vh;
+      text-align: center;
+      color: #999;
+      font-size: 1.5rem;
+      font-style: italic;
+      padding: 1rem;
+    "
+  >
+    <p>Enter ingredients to start browsing recipes...</p>
+  </div>
+  <div
+    *ngIf="recipes.length == 0 && searchInitiated"
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60vh;
+      text-align: center;
+      color: #999;
+      font-size: 1.5rem;
+      font-style: italic;
+      padding: 1rem;
+    "
+  >
+    <p>No recipes were found for the ingredient(s) entered.</p>
+  </div>
+  <div *ngIf="recipes.length > 0">
+    <ion-card *ngFor="let recipe of recipes"
+      ><img src="{{ recipe.image }}" />
+      <ion-card-header>
+        <ion-card-title>{{ recipe.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-button>Details</ion-button>
+    </ion-card>
+  </div>
 </ion-content>
