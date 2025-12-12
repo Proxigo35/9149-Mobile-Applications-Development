@@ -9,15 +9,24 @@ import {
   IonButton,
   IonInput,
   IonHeader,
+  IonButtons,
   IonToolbar,
   IonTitle,
   IonCardTitle,
   IonCardHeader,
+  IonIcon,
   IonCardContent,
   IonCard,
   IonContent,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+import { addIcons } from 'ionicons';
+import { heartOutline, settingsOutline } from 'ionicons/icons';
+
+addIcons({
+  'heart-outline': heartOutline,
+  'settings-outline': settingsOutline,
+});
 
 @Component({
   selector: 'app-home',
@@ -28,8 +37,10 @@ import { CommonModule } from '@angular/common';
     IonCardTitle,
     IonCardHeader,
     IonCardContent,
-    IonCard,
+   IonCard,
     FormsModule,
+    IonIcon,
+    IonButtons,
     IonButton,
     IonInput,
     IonHeader,

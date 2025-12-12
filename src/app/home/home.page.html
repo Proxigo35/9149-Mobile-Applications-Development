@@ -1,6 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title> G00472938 </ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-button>
+      <ion-button>
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -9,8 +17,11 @@
     label="Enter ingredients"
     placeholder="ingredients"
     [(ngModel)]="ingredients"
+    style="margin: 20px"
   ></ion-input>
-  <ion-button (click)="getRecipes()" expand="block">Search</ion-button>
+  <ion-button (click)="getRecipes()" expand="block" style="padding: 10px"
+    >Search</ion-button
+  >
   <div
     *ngIf="recipes.length == 0"
     style="
@@ -43,13 +54,18 @@
     <ion-card
       *ngFor="let recipe of recipes"
       style="
-        display: inline-block;
-        width: auto;
-        justify-content: center;
-        margin: 5px;
+        width: 300px;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         text-align: center;
+        margin: 5px;
       "
-      ><img src="{{ recipe.image }}" />
+      ><img
+        src="{{ recipe.image }}"
+        style="width: 200px; height: 200px; margin: 10px auto"
+      />
       <ion-card-header>
         <ion-card-title>{{ recipe.title }}</ion-card-title>
       </ion-card-header>
