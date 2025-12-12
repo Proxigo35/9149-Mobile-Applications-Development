@@ -13,6 +13,7 @@ import {
   IonTitle,
   IonCardTitle,
   IonCardHeader,
+  IonCardContent,
   IonCard,
   IonContent,
 } from '@ionic/angular/standalone';
@@ -26,6 +27,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     IonCardTitle,
     IonCardHeader,
+    IonCardContent,
     IonCard,
     FormsModule,
     IonButton,
@@ -39,16 +41,25 @@ import { CommonModule } from '@angular/common';
 export class HomePage {
   ingredients: string = '';
   recipes: any[] = [];
-  searchInitiated: boolean = false;
+  searchInitiated = false;
 
   options: HttpOptions = {
     url: ''
   };
 
   constructor(
+    private router: Router,
     private ds: Data,
     private mhs: Http,
   ) {}
+
+  getRecipeDetails(recipeID: number) {
+    this.router.navigate(
+      ['/recipes'], {
+        state: { recipeID: recipeID }
+      }
+    );
+  }
 
   async getRecipes() {
     this.options.url =
@@ -59,4 +70,5 @@ export class HomePage {
     this.recipes = (await this.mhs.get(this.options)).data.results;
     this.searchInitiated = true;
   }
+
 }

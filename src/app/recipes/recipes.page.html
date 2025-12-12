@@ -1,13 +1,29 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Recipes</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content
+  ><ion-spinner *ngIf="!recipeData"></ion-spinner>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>Ingredients</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-card *ngFor="let recipe of recipes">
-  <img src="{{ recipe.image }}">
-  <ion-card-header>
-  <ion-card-title>{{ recipe.title }}</ion-card-title>
-</ion-card-header>
-<ion-button>Details</ion-button>
-</ion-card>
+  <div *ngIf="recipeData">
+    <ion-card
+      *ngFor="let ingredient of recipeData.extendedIngredients"
+      style="
+        display: inline-block;
+        width: auto;
+        justify-content: center;
+        margin: 5px;
+        text-align: center;
+      "
+    >
+      <img
+        [src]="'https://spoonacular.com/cdn/ingredients_250x250/' + ingredient.image"
+        alt="{{ ingredient.name }}"
+      />
+      <ion-card-header>
+        <ion-card-title>{{ ingredient.name | titlecase }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
+</ion-content>
