@@ -28,9 +28,9 @@ import {
   ],
 })
 export class SettingsPage {
-  constructor(private storage: Data) {}
-
   units!: string;
+
+  constructor(private storage: Data) {}
 
   async ngOnInit() {
     this.units = await this.storage.get('units');

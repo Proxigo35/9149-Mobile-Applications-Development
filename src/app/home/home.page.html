@@ -2,75 +2,61 @@
   <ion-toolbar>
     <ion-title> G00472938 </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="openFavourites()">
+      <ion-button (click)="openFavourites()" class="favourites-button">
         <ion-icon name="heart"></ion-icon>
+
+        <ion-badge
+          *ngIf="favouritesCount > 0"
+          color="danger"
+          class="favourites-badge"
+        >
+          {{ favouritesCount }}
+        </ion-badge>
       </ion-button>
       <ion-button (click)="openSettings()">
         <ion-icon name="settings-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-input
+      label="Enter ingredients"
+      placeholder="ingredients"
+      [(ngModel)]="ingredients"
+      (keyup.enter)="getRecipes()"
+      style="margin: 20px"
+    ></ion-input>
+    <ion-button (click)="getRecipes()" expand="block" style="padding: 10px"
+      >Search</ion-button
+    >
+  </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-input
-    label="Enter ingredients"
-    placeholder="ingredients"
-    [(ngModel)]="ingredients"
-    style="margin: 20px"
-  ></ion-input>
-  <ion-button (click)="getRecipes()" expand="block" style="padding: 10px"
-    >Search</ion-button
-  >
-  <div
-    *ngIf="recipes.length == 0"
-    style="
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 60vh;
-      text-align: center;
-      color: #999;
-      font-size: 1.5rem;
-      font-style: italic;
-      padding: 1rem;
-    "
-  >
+<ion-content
+  [fullscreen]="true"
+  (ionScroll)="saveScrollPosition($event)"
+  scrollEvents="true"
+>
+  <div *ngIf="recipes.length == 0" class="placeholder-message">
     <p>
       {{ searchInitiated? 'No recipes were found for the ingredients entered.' :
       'Enter ingredients to start browsing recipes.' }}
     </p>
   </div>
-  <div
-    *ngIf="recipes.length > 0"
-    style="
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      padding: 10px;
-    "
-  >
+  <div *ngIf="recipes.length > 0" class="cards-container">
     <ion-card
       *ngFor="let recipe of recipes"
-      style="
-        width: 300px;
-        height: 350px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        text-align: center;
-        margin: 5px;
-      "
-      ><img
-        src="{{ recipe.image }}"
-        style="width: 200px; height: 200px; margin: 10px auto"
-      />
+      (click)="getRecipeDetails(recipe.id)"
+      class="recipe-card"
+      ><img [src]="recipe.image" />
       <ion-card-header>
         <ion-card-title>{{ recipe.title }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-button (click)="getRecipeDetails(recipe.id)">Details</ion-button>
+        <ion-button
+          (click)="getRecipeDetails(recipe.id); $event.stopPropagation()"
+          >Details</ion-button
+        >
       </ion-card-content>
     </ion-card>
   </div>

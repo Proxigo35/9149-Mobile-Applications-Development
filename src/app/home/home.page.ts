@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
+import { Data } from '../services/data';
 import { Http } from '../services/http';
 import { HttpOptions } from '@capacitor/core';
 import { Router } from '@angular/router';
@@ -18,13 +19,15 @@ import {
   IonCardContent,
   IonCard,
   IonContent,
+  IonBadge,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline, settingsOutline } from 'ionicons/icons';
+import { ViewChild } from '@angular/core';
 
 addIcons({
-  'heart': heart,
+  heart: heart,
   'heart-outline': heartOutline,
   'settings-outline': settingsOutline,
 });
@@ -48,6 +51,7 @@ addIcons({
     IonToolbar,
     IonTitle,
     IonContent,
+    IonBadge,
   ],
 })
 export class HomePage {
@@ -55,6 +59,9 @@ export class HomePage {
   recipes: any[] = [];
   searchInitiated: boolean = false;
   selectedUnit!: string;
+  favouritesCount!: number;
+  navigatedAway!: boolean;
+  scrollPosition: number = 0;
 
   options: HttpOptions = {
     url: '',
@@ -63,7 +70,33 @@ export class HomePage {
   constructor(
     private router: Router,
     private mhs: Http,
+    private storage: Data,
   ) {}
+
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
+
+  async ionViewWillEnter() {
+    const favourites = (await this.storage.get('favourites')) ?? [];
+    this.favouritesCount = favourites.length;
+
+    if (this.navigatedAway) {
+      setTimeout(() => {
+        this.content.scrollToPoint(0, this.scrollPosition, 0);
+      }, 50);
+    }
+  }
+
+  saveScrollPosition(event: any) {
+    this.scrollPosition = event.detail.scrollTop;
+  }
+
+  scrollToTop() {
+    this.scrollPosition = 0;
+
+    setTimeout(() => {
+      this.content.scrollToTop(300);
+    }, 50);
+  }
 
   getRecipeDetails(recipeID: number) {
     this.router.navigate(['/recipes'], {
@@ -87,5 +120,7 @@ export class HomePage {
       this.ingredients;
     this.recipes = (await this.mhs.get(this.options)).data.results;
     this.searchInitiated = true;
+    this.navigatedAway = false;
+    this.scrollToTop();
   }
 }

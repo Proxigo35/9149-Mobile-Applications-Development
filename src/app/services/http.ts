@@ -4,14 +4,10 @@ import { CapacitorHttp, HttpOptions } from '@capacitor/core';
 @Injectable({
   providedIn: 'root',
 })
-
 export class Http {
-    
-  constructor() { }
-  
+  constructor() {}
+
   public async get(options: HttpOptions) {
-	  console.log(options.url);
     return await CapacitorHttp.get(options);
   }
-  
 }

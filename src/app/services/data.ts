@@ -12,7 +12,6 @@ export class Data {
 
   async init() {
     await this.storage.create();
-
     const units = await this.storage.get('units');
 
     if (units === null || units === undefined) {
