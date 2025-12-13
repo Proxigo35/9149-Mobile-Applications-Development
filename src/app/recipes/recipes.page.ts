@@ -13,9 +13,12 @@ import {
   IonCardContent,
   IonCardHeader,
   IonLabel,
+  IonList,
   IonCard,
   IonHeader,
+  IonIcon,
   IonTitle,
+  IonItem,
   IonContent,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -34,35 +37,62 @@ import {
     IonContent,
     IonSpinner,
     IonCard,
+    IonIcon,
     IonHeader,
     IonTitle,
     IonToolbar,
     CommonModule,
+    IonList,
+    IonItem,
     FormsModule,
   ],
 })
 export class RecipesPage {
   recipeData: any = null;
-
-  options: HttpOptions = {
-    url: ''
-  };
+  units!: string;
+  favourites: any[] = [];
+  favourited!: boolean;
 
   constructor(
     private router: Router,
-    private ds: Data,
+    private storage: Data,
     private mhs: Http,
   ) {}
 
   ngOnInit() {
-    this.getRecipeData((this.router.getCurrentNavigation()?.extras.state as { recipeID: number }).recipeID);
+    const recipeID = (
+      this.router.getCurrentNavigation()?.extras.state as { recipeID: number }
+    ).recipeID;
+
+    this.getRecipeData(recipeID);
+    this.getFavourites(recipeID);
+  }
+
+  async getFavourites(recipeID: number) {
+    this.favourites = (await this.storage.get('favourites')) ?? [];
+    this.favourited = this.favourites.some((r) => r.id === recipeID);
   }
 
   async getRecipeData(recipeID: number) {
-    this.options.url =
-      `https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=` +
-      environment.apiKey
-      this.recipeData = (await this.mhs.get(this.options)).data;
-      console.log(this.recipeData);
+    const options: HttpOptions = {
+      url: `https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=${environment.apiKey}`,
+    };
+
+    this.recipeData = (await this.mhs.get(options)).data;
+    this.units = (await this.storage.get('units')) ?? 'metric';
+  }
+
+  async toggleFavourites(recipeID: number) {
+    if (!this.recipeData) return;
+
+    if (this.favourited) {
+      this.favourites = this.favourites.filter((r) => r.id !== recipeID);
+      this.favourited = false;
+    } else {
+      this.favourites = [...this.favourites, this.recipeData];
+      this.favourited = true;
+    }
+
+    await this.storage.set('favourites', this.favourites);
   }
 }

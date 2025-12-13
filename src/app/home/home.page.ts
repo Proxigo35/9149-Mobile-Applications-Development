@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
-import { Data } from '../services/data';
 import { Http } from '../services/http';
 import { HttpOptions } from '@capacitor/core';
 import { Router } from '@angular/router';
+import { IonicStorageModule } from '@ionic/storage-angular';
 import {
   IonButton,
   IonInput,
@@ -21,9 +21,10 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
-import { heartOutline, settingsOutline } from 'ionicons/icons';
+import { heart, heartOutline, settingsOutline } from 'ionicons/icons';
 
 addIcons({
+  'heart': heart,
   'heart-outline': heartOutline,
   'settings-outline': settingsOutline,
 });
@@ -37,7 +38,7 @@ addIcons({
     IonCardTitle,
     IonCardHeader,
     IonCardContent,
-   IonCard,
+    IonCard,
     FormsModule,
     IonIcon,
     IonButtons,
@@ -52,24 +53,30 @@ addIcons({
 export class HomePage {
   ingredients: string = '';
   recipes: any[] = [];
-  searchInitiated = false;
+  searchInitiated: boolean = false;
+  selectedUnit!: string;
 
   options: HttpOptions = {
-    url: ''
+    url: '',
   };
 
   constructor(
     private router: Router,
-    private ds: Data,
     private mhs: Http,
   ) {}
 
   getRecipeDetails(recipeID: number) {
-    this.router.navigate(
-      ['/recipes'], {
-        state: { recipeID: recipeID }
-      }
-    );
+    this.router.navigate(['/recipes'], {
+      state: { recipeID: recipeID },
+    });
+  }
+
+  openFavourites() {
+    this.router.navigate(['/favourites']);
+  }
+
+  openSettings() {
+    this.router.navigate(['/settings']);
   }
 
   async getRecipes() {
@@ -81,5 +88,4 @@ export class HomePage {
     this.recipes = (await this.mhs.get(this.options)).data.results;
     this.searchInitiated = true;
   }
-
 }

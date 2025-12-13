@@ -1,27 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> G00472938 </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openFavourites()">
-        <ion-icon name="heart"></ion-icon>
-      </ion-button>
-      <ion-button (click)="openSettings()">
-        <ion-icon name="settings-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title> Favourites </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-input
-    label="Enter ingredients"
-    placeholder="ingredients"
-    [(ngModel)]="ingredients"
-    style="margin: 20px"
-  ></ion-input>
-  <ion-button (click)="getRecipes()" expand="block" style="padding: 10px"
-    >Search</ion-button
-  >
   <div
     *ngIf="recipes.length == 0"
     style="
@@ -36,10 +19,7 @@
       padding: 1rem;
     "
   >
-    <p>
-      {{ searchInitiated? 'No recipes were found for the ingredients entered.' :
-      'Enter ingredients to start browsing recipes.' }}
-    </p>
+    <p>No favourites added yet.</p>
   </div>
   <div
     *ngIf="recipes.length > 0"
@@ -62,8 +42,9 @@
         text-align: center;
         margin: 5px;
       "
-      ><img
-        src="{{ recipe.image }}"
+    >
+      <img
+        [src]="recipe.image"
         style="width: 200px; height: 200px; margin: 10px auto"
       />
       <ion-card-header>

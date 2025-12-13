@@ -11,8 +11,8 @@
       *ngFor="let ingredient of recipeData.extendedIngredients"
       style="
         display: inline-block;
-        width: 150px;
-        height: 300px;
+        width: 250px;
+        height: 350px;
         justify-content: center;
         margin: 5px;
         text-align: center;
@@ -24,20 +24,28 @@
         style="width: 100px; height: 100px; margin: 10px 0; border-radius: 8px"
       />
       <ion-card-header>
-        <ion-card-title>{{ ingredient.name | titlecase }}</ion-card-title>
+        <ion-card-title>{{ ingredient.original | titlecase }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>
-          {{ ingredient.measures.metric.amount + ' ' +
-          ingredient.measures.metric.unitLong}}
+        <p *ngIf="units">
+          {{ units === 'metric'? ingredient.measures.metric.amount + ' ' +
+          ingredient.measures.metric.unitLong : ingredient.measures.us.amount +
+          ' ' + ingredient.measures.us.unitLong }}
         </p>
       </ion-card-content>
     </ion-card>
   </div>
-  <ion-label style="padding-left: 20px">Recipe instructions</ion-label>
-  <ol *ngIf="recipeData">
-    <li *ngFor="let step of recipeData.analyzedInstructions[0].steps">
-      {{ step.step }}
-    </li>
-  </ol>
+  <ion-title style="padding: 20px">Recipe instructions</ion-title>
+  <ion-list *ngIf="recipeData">
+    <ion-item *ngFor="let step of recipeData.analyzedInstructions[0].steps">
+      <ion-label>{{ step.number + ': ' + step.step }}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-button (click)="toggleFavourites(recipeData.id)">
+    <ion-icon
+      slot="start"
+      [name]="favourited? 'heart' : 'heart-outline'"
+    ></ion-icon>
+    {{ favourited?' Remove from favourites' : ' Add to favourites' }}
+  </ion-button>
 </ion-content>

@@ -14,4 +14,12 @@ export const routes: Routes = [
     path: 'recipes',
     loadComponent: () => import('./recipes/recipes.page').then( m => m.RecipesPage)
   },
+  {
+    path: 'settings',
+    loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage)
+  },
+  {
+    path: 'favourites',
+    loadComponent: () => import('./favourites/favourites.page').then( m => m.FavouritesPage)
+  },
 ];
